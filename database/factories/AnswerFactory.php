@@ -26,7 +26,6 @@ class AnswerFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence(),
-            'correct' => $this->faker->boolean(),
             'exercise_id' => $this->faker->numberBetween(1, Exercise::count())
         ];
     }

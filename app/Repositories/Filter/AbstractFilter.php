@@ -10,7 +10,7 @@ abstract class AbstractFilter
     private ?int $page;
     private ?int $limit;
 
-    private string $sort;
+    private ?string $sort;
 
     private ?int $fromDate;
     private ?int $toDate;
@@ -25,7 +25,7 @@ abstract class AbstractFilter
         $this->limit = Arr::get($data, 'limit', 5);
         $this->fromDate = Arr::get($data, 'from_date', null);
         $this->toDate = Arr::get($data, 'to_date', null);
-        $this->sort = Arr::get($data, 'sort', 'id');
+        $this->sort = Arr::get($data, 'sort');
     }
 
     /**

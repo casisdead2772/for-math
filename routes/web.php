@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RatingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExerciseController;
 
@@ -27,6 +28,8 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 Route::middleware(['auth'])->group(function () {
     Route::resource('exercises', ExerciseController::class);
     Route::get('my-exercises', [ExerciseController::class, 'showUserExercises'])->name('my-exercises');
+    Route::post('rating', [RatingController::class, 'store'])->name('rating.store');
+    Route::get('rating/{id}', [RatingController::class, 'index'])->name('rating.index');
 });
 
 

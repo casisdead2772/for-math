@@ -2,7 +2,7 @@
 @section('edit-exercise')
     <div class="container justify-content-center">
         <div class="p-4 p-md-5 mb-4 rounded">
-            <form method="POST" action="{{route('exercises.update', $exercise->id)}}">
+            <form method="POST" action="{{ route('exercises.update', $exercise->id)}}">
                 @method('PUT')
                 @csrf
                 <div class="form-group">
@@ -12,8 +12,8 @@
                 <div class="form-group">
                     <label for="subject">Choose subject</label>
                     <select class="form-control" name="subject">
-                        @foreach($subjects as $subject)\
-                            @if($subject->id == $exercise->subject_id)
+                        @foreach($subjects as $subject)
+                            @if($subject->id === $exercise->subject_id)
                             <option selected value="{{ $subject->id }}">{{ $subject->name }}</option>
                             @else
                             <option value="{{ $subject->id }}">{{ $subject->name }}</option>

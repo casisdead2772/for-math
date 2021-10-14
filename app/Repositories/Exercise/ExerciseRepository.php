@@ -5,15 +5,14 @@ namespace App\Repositories\Exercise;
 
 use App\Models\Exercise;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\Exercise\Filter\ExerciseFilter;
 
 
+
 class ExerciseRepository
 {
-    /**
-     * @var Exercise
-     */
     protected Exercise $exercise;
 
     /**
@@ -25,21 +24,19 @@ class ExerciseRepository
     }
 
     /**
-     * @param $data
+     * @param $request
      * @return Exercise
      */
-    public function save($data)
+    public function save($request)
     {
         $exercise = new $this->exercise;
-        $exercise->user_id = $data['user_id'];
-        $exercise->subject_id = $data['subject'];
-        $exercise->name = $data['name'];
-        $exercise->task = $data['task'];
-        $exercise->answer = $data['answer'];
-
+        $exercise->user_id = Auth::id();
+        $exercise->subject_id = $request->get('subject');
+        $exercise->name = $request->get('name');
+        $exercise->task = $request->get('task');
+        $exercise->difficulty = $request->get('difficulty');
         $exercise->save();
-
-        return $exercise->fresh();
+        return $exercise;
     }
 
     public function update($data, $id)
@@ -49,8 +46,6 @@ class ExerciseRepository
         $exercise->name = $data['name'];
         $exercise->task = $data['task'];
         $exercise->answer = $data['answer'];
-
-        $exercise->save();
 
         return $exercise->fresh();
 
@@ -65,7 +60,6 @@ class ExerciseRepository
         return $this->exercise
             ->where('user_id', $id)
             ->get();
-
     }
 
     /**
@@ -73,13 +67,16 @@ class ExerciseRepository
      */
     public function getAll(ExerciseFilter $exerciseFilter)
     {
-        $query = DB::table('exercises')
-            ->join('users', 'exercises.user_id', '=', 'users.id')
-            ->select('exercises.*', 'users.name as username')
-            ->orderBy($exerciseFilter->getSort());
-        if($exerciseFilter->getSubjectId()){
-            $query->where('subject_id', $exerciseFilter->getSubjectId());
+        $query = Exercise::search($exerciseFilter->getSearch());
+        if($exerciseFilter->getSort()){
+            $query->within('exercises_index_'.$exerciseFilter->getSort());
         }
+
+        if($exerciseFilter->getSubjectId()){
+            $query
+                ->where('subject_id', $exerciseFilter->getSubjectId());
+        }
+        $query->get();
 
         return $query->paginate($exerciseFilter->getLimit());
     }

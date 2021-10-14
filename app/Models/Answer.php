@@ -16,4 +16,9 @@ class Answer extends Model
     {
         return $this->belongsTo(Exercise::class);
     }
+
+    protected $fillable = [
+        'title',
+        'exercise_id'
+    ];
 }

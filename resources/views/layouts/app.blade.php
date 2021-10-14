@@ -9,9 +9,6 @@
 
     <title>{{ config('app.name', 'For Math') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -24,32 +21,45 @@
     <!-- Custom styles for this template -->
     <link href="https://getbootstrap.com/docs/4.0/examples/product/product.css" rel="stylesheet">
 </head>
-<body style="margin-bottom: 144px">
-<main class="content">
+<body>
+    <div id="app">
+    <main class="content">
+    @include('layouts.navbar')
     <div class="flash-message">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <ul>
+                @foreach ($errors->all() as $error)
+                   <ul>{{ $error }}</ul>
+                @endforeach
+                </ul>
+            </div>
+        @endif
         @foreach (['danger', 'warning', 'success', 'info'] as $msg)
             @if(Session::has('alert-' . $msg))
-
                 <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
             @endif
         @endforeach
-    </div>
-    @include('layouts.navbar')
-    <div class="d-flex" id="wrapper">
-        @include('layouts.sidebar')
-        <div class="container">
-        @yield('content')
-        @yield('exercise')
-        @yield('my-exercises')
-        @yield('edit-exercise')
-        @yield('my-exercises')
-        @yield('404')
         </div>
+        <div class="d-flex" id="wrapper">
+            @include('layouts.sidebar')
+        <div class="container">
+            <div class="container p-2">
+            @include('layouts.search')
+            </div>
+                @yield('content')
+                @yield('exercise')
+                @yield('my-exercises')
+                @yield('edit-exercise')
+                @yield('my-exercises')
+                @yield('404')
+                </div>
+            </div>
+            @include('layouts.footer')
+            </main>
     </div>
-</main>
-@include('layouts.footer')
+    <script src="{{ mix('js/app.js') }}"></script>
+    <script src="{{ asset('js/sidebar.js') }}" rel="stylesheet"></script>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="{{ asset('js/sidebar.js') }}" rel="stylesheet"></script>
 </html>

@@ -5,47 +5,42 @@ namespace App\Services;
 
 use App\Repositories\Exercise\ExerciseRepository;
 use App\Repositories\Exercise\Filter\ExerciseFilter;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Services\Answer\AnswerService;
+use ErrorException;
+use Illuminate\Http\Request;
+use http\Exception;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-use Exception;
 use InvalidArgumentException;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class ExerciseService
 {
-    /**
-     * @var $exerciseRepository
-     */
+
     protected ExerciseRepository $exerciseRepository;
+    protected AnswerService $answerService;
 
     /**
      * @param ExerciseRepository $exerciseRepository
+     * @param AnswerService $answerService
      */
-    public function __construct(ExerciseRepository $exerciseRepository)
+    public function __construct(ExerciseRepository $exerciseRepository, AnswerService $answerService)
     {
         $this->exerciseRepository = $exerciseRepository;
+        $this->answerService = $answerService;
     }
 
     /**
-     * @param array $data
-     * @return String
+     * @param Request $request
      */
-    public function createExercise(array $data): string
+    public function createExercise(Request $request): void
     {
-        $validator = Validator::make($data,[
-            'subject' => 'required',
-            'name' => 'required',
-            'task' => 'required',
-            'answer' => 'required',
-        ]);
-        $data += ['user_id' => Auth::id()];
-
-        if($validator->fails()) {
-            throw new InvalidArgumentException($validator->errors()->first());
+        try{
+            $exercise = $this->exerciseRepository->save($request);
+            $this->answerService->createAnswer($request->get('answers'), $exercise->id);
+        } catch (\Exception $e) {
+            throw new BadRequestException($e->getMessage());
         }
-
-        return $this->exerciseRepository->save($data);
     }
 
     public function getUserExercises()

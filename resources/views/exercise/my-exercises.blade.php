@@ -3,9 +3,9 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="list-group">
+                <ul class="list-group">
                     @foreach ($myExercises as $exercise)
-                        <a class="list-group-item list-group-item-action">
+                        <li class="list-group-item">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">Task: {{ $exercise->name }}</h5>
                                 <small> {{ $exercise->created_at }}</small>
@@ -20,16 +20,21 @@
                                 <form action="{{ route('exercises.destroy', $exercise->id) }}" method="POST">
                                     @method('DELETE')
                                     @csrf
-                                <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-danger mb-3">Delete</button>
+                                <button type="button" data-toggle="modal" data-target="#MyModal{{ $exercise->id }}" class="btn btn-danger mb-3">Delete</button>
+                                    <x-modal id="{{ $exercise->id }}" title="Creating exercise">
+                                        <div class="alert alert-primary" role="alert">
+                                            Are you sure you want to do this?
+                                        </div>
+                                    </x-modal>
                                 </form>
                                 <form action="{{ route('exercises.show', $exercise->id) }}" method="GET">
                                     @csrf
                                 <button type="submit" class="btn btn-info mb-3">Show</button>
                                 </form>
                             </div>
-                        </a>
+                        </li>
                     @endforeach
-                </div>
+                </ul>
             </div>
         </div>
     </div>
