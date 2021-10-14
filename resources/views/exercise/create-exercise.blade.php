@@ -2,7 +2,7 @@
 @section('exercise')
 <div class="container justify-content-center">
     <div class="p-4 p-md-5 mb-4 rounded">
-        <form method="POST" action="{{route('exercises.store')}}">
+        <form method="POST" action="{{route('exercises.store')}}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="name">Task name</label>
@@ -34,7 +34,6 @@
                     <option @if((int)old('difficulty') === 5) selected @endif>5</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label for="answer">Answer</label>
                 <input class="form-control" name="answers[]" value="{{ old('answers[0]') }}"/>
@@ -46,6 +45,9 @@
             <div class="form-group">
                 <label for="answer3">Answer 3 (optional)</label>
                 <input class="form-control" name="answers[]" value="{{ old('answers[2]') }}"/>
+            </div>
+            <div class="form-group">
+                <input type="file" name="files[]" class="dropzone" multiple accept="image/jpeg,image/png,image/gif"   >
             </div>
             <div class="col-auto d-grid gap-2 d-md-flex justify-content-md-end">
                 <button type="button" class="btn btn-primary mb-3"  data-toggle="modal" data-target="#MyModal">Create exercise</button>

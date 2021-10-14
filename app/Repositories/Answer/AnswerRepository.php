@@ -20,11 +20,13 @@ class AnswerRepository
 
     public function create($answers, $exerciseId)
     {
-        foreach ($answers as $answer){
-            Answer::create([
-                'title' => $answer,
-                'exercise_id' => $exerciseId
-            ]);
+        foreach ($answers as $answerTitle){
+            if($answerTitle){
+                Answer::create([
+                    'title' => $answerTitle,
+                    'exercise_id' => $exerciseId
+                ]);
+            }
         }
     }
 }

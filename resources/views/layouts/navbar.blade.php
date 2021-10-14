@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top py-1">
+<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm py-1">
     @auth
     <button class="btn btn-secondary" id="sidebarToggle">Menu</button>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>

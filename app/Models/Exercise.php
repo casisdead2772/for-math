@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Searchable;
 use willvincent\Rateable\Rateable;
+use App\Models\File;
 
 class Exercise extends Model
 {
@@ -22,6 +23,7 @@ class Exercise extends Model
      * @var string
      */
     protected $dateFormat = 'U';
+
 
     /**
      *
@@ -59,4 +61,8 @@ class Exercise extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
 }

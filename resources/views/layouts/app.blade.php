@@ -16,10 +16,6 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
-
-    <link href="https://getbootstrap.com/docs/5.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="https://getbootstrap.com/docs/4.0/examples/product/product.css" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -54,6 +50,7 @@
                 @yield('edit-exercise')
                 @yield('my-exercises')
                 @yield('404')
+                @yield('solve-exercise')
                 </div>
             </div>
             @include('layouts.footer')

@@ -6,9 +6,8 @@ namespace App\Services;
 use App\Repositories\Exercise\ExerciseRepository;
 use App\Repositories\Exercise\Filter\ExerciseFilter;
 use App\Services\Answer\AnswerService;
-use ErrorException;
+use App\Services\File\FileService;
 use Illuminate\Http\Request;
-use http\Exception;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use InvalidArgumentException;
@@ -19,15 +18,18 @@ class ExerciseService
 
     protected ExerciseRepository $exerciseRepository;
     protected AnswerService $answerService;
+    protected FileService $fileService;
 
     /**
      * @param ExerciseRepository $exerciseRepository
      * @param AnswerService $answerService
+     * @param FileService $fileService
      */
-    public function __construct(ExerciseRepository $exerciseRepository, AnswerService $answerService)
+    public function __construct(ExerciseRepository $exerciseRepository, AnswerService $answerService, FileService $fileService)
     {
         $this->exerciseRepository = $exerciseRepository;
         $this->answerService = $answerService;
+        $this->fileService = $fileService;
     }
 
     /**
@@ -35,9 +37,11 @@ class ExerciseService
      */
     public function createExercise(Request $request): void
     {
-        try{
+        try {
+            $images = $request->file('files');
             $exercise = $this->exerciseRepository->save($request);
-            $this->answerService->createAnswer($request->get('answers'), $exercise->id);
+            $this->fileService->uploadExerciseImage($images, $exercise->id);
+            $this->answerService->createAnswers($request->get('answers'), $exercise->id);
         } catch (\Exception $e) {
             throw new BadRequestException($e->getMessage());
         }

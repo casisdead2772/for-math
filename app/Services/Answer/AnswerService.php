@@ -18,7 +18,7 @@ class AnswerService
         $this->answerRepository = $answerRepository;
     }
 
-    public function createAnswer($answers, $exerciseId)
+    public function createAnswers($answers, $exerciseId)
     {
         $this->answerRepository->create($answers, $exerciseId);
     }

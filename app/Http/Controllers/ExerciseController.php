@@ -53,7 +53,7 @@ class ExerciseController extends Controller
             Log::error($e->getMessage());
             return redirect()->back()->withErrors($e->getMessage());
         }
-        return view('exercise.solve-exercise', ['exercise' => $exercise]);
+        return view('exercise.solve-exercise', compact(['exercise']));
     }
 
     public function update(Request $request, $id)
