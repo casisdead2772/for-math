@@ -53,7 +53,7 @@
                 @yield('solve-exercise')
                 </div>
             </div>
-            @include('layouts.footer')
+{{--            @include('layouts.footer')--}}
             </main>
     </div>
     <script src="{{ mix('js/app.js') }}"></script>
