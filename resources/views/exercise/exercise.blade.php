@@ -13,7 +13,7 @@
                         <p class="mb-1">{{ $exercise->task }}</p>
                         <div class="d-flex position-relative justify-content-between">
                             <div class="row align-items-center">
-                        <small>Author: {{ $exercise->user->name }}</small>
+                        <small>Author: {{ $exercise->user }}</small>
                             </div>
                             <h2>{{ $exercise->difficulty }}</h2>
                         <form action="{{ route('exercises.show', $exercise->id) }}" method="GET">
