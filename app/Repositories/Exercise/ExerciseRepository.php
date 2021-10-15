@@ -69,7 +69,7 @@ class ExerciseRepository
     {
         $query = Exercise::search($exerciseFilter->getSearch());
         if($exerciseFilter->getSort()){
-            $query->within('exercises_index_'.$exerciseFilter->getSort());
+            $query->within(env('ALGOLIA_INDEX').'_'.$exerciseFilter->getSort());
         }
 
         if($exerciseFilter->getSubjectId()){

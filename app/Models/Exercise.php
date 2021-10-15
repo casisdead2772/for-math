@@ -31,7 +31,7 @@ class Exercise extends Model
      */
     public function searchableAs()
     {
-        return 'exercises_index';
+        return env('ALGOLIA_INDEX');
     }
 
     /**
