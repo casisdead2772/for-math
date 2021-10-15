@@ -15,10 +15,6 @@ use App\Http\Controllers\ExerciseController;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
-
 require __DIR__.'/auth.php';
 
 Auth::routes();
