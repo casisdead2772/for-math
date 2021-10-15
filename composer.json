@@ -17,12 +17,12 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.3",
         "meilisearch/meilisearch-php": "^0.19.1",
-        "willvincent/laravel-rateable": "^2.3"
+        "willvincent/laravel-rateable": "^2.3",
+        "fakerphp/faker": "^1.9.1"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
         "facade/ignition": "^2.5",
-        "fakerphp/faker": "^1.9.1",
         "laravel/breeze": "^1.4",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
