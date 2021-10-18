@@ -49,12 +49,20 @@ class ExerciseRepository
 
     public function update($request, $id)
     {
+        $tags = $request->get('tags');
+
         $exercise = Exercise::findOrFail($id);
         $exercise->subject_id = $request->get('subject0');
         $exercise->name = $request->get('name');
         $exercise->task = $request->get('task');
 
+        foreach($tags as $tag){
+            $exercise->tags()->attach($tag);
+        }
+
         return $exercise->fresh();
+
+
     }
 
     /**

@@ -47,10 +47,12 @@
                     <label for="answer">Answer</label>
                     <input class="form-control" name="answers[]" value="{{ $exercise->answers[0]->title }}"/>
                 </div>
-                @if(isset($exercise->answers[1]))
                 <div class="form-group">
                     <label for="answer2">Answer 2 (optional)</label>
+                    @if(isset($exercise->answers[1]))
                     <input class="form-control" name="answers[]" value="{{ $exercise->answers[1]->title }}"/>
+                    @else
+                    <input class="form-control" name="answers[]"/>
                 </div>
                 @endif
 
@@ -58,7 +60,8 @@
                     <label for="answer3">Answer 3 (optional)</label>
                     @if(isset($exercise->answers[2]))
                     <input class="form-control" name="answers[]" value="{{ $exercise->answers[2]->title }}"/>
-                        @else()
+                        @else
+                        <input class="form-control" name="answers[]"/>
                     @endif
                 </div>
                 <div class="col-auto d-grid gap-2 d-md-flex justify-content-md-end">

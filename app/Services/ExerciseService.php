@@ -43,7 +43,6 @@ class ExerciseService
     {
         try {
             $images = $request->file('files');
-            $tags = $request->get('tags');
             $exercise = $this->exerciseRepository->save($request);
             $this->fileService->uploadExerciseImage($images, $exercise->id);
             $this->answerService->createAnswers($request->get('answers'), $exercise->id);
@@ -52,11 +51,12 @@ class ExerciseService
         }
     }
 
-    public function updateExercise(Request $request, $id)
+    public function updateExercise($request, $id)
     {
         try {
-            $this->exerciseRepository->update($request, $id);
+            $exercise = $this->exerciseRepository->update($request, $id);
             $this->answerService->createAnswers($request->get('answers'), $id);
+            return $exercise;
         } catch (\Exception $e) {
             throw new BadRequestException($e->getMessage());
         }
