@@ -5,7 +5,7 @@
  */
 
 require('./bootstrap');
-
+import('bootstrap-select');
 
 window.Vue = require('vue').default;
 

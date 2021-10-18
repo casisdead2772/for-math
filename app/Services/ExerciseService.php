@@ -7,6 +7,7 @@ use App\Repositories\Exercise\ExerciseRepository;
 use App\Repositories\Exercise\Filter\ExerciseFilter;
 use App\Services\Answer\AnswerService;
 use App\Services\File\FileService;
+use App\Services\Tag\TagService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -19,17 +20,20 @@ class ExerciseService
     protected ExerciseRepository $exerciseRepository;
     protected AnswerService $answerService;
     protected FileService $fileService;
+    protected TagService $tagService;
 
     /**
      * @param ExerciseRepository $exerciseRepository
      * @param AnswerService $answerService
      * @param FileService $fileService
+     *
      */
-    public function __construct(ExerciseRepository $exerciseRepository, AnswerService $answerService, FileService $fileService)
+    public function __construct(ExerciseRepository $exerciseRepository, AnswerService $answerService, FileService $fileService, TagService $tagService)
     {
         $this->exerciseRepository = $exerciseRepository;
         $this->answerService = $answerService;
         $this->fileService = $fileService;
+        $this->tagService = $tagService;
     }
 
     /**
@@ -39,6 +43,7 @@ class ExerciseService
     {
         try {
             $images = $request->file('files');
+            $tags = $request->get('tags');
             $exercise = $this->exerciseRepository->save($request);
             $this->fileService->uploadExerciseImage($images, $exercise->id);
             $this->answerService->createAnswers($request->get('answers'), $exercise->id);
@@ -47,10 +52,20 @@ class ExerciseService
         }
     }
 
-    public function getUserExercises()
+    public function updateExercise(Request $request, $id)
     {
-        $id = Auth::id();
-        return $this->exerciseRepository->getByUser($id);
+        try {
+            $this->exerciseRepository->update($request, $id);
+            $this->answerService->createAnswers($request->get('answers'), $id);
+        } catch (\Exception $e) {
+            throw new BadRequestException($e->getMessage());
+        }
+    }
+
+    public function getUserExercises($request, $id)
+    {
+        $filter = new ExerciseFilter($request->input());
+        return $this->exerciseRepository->getByUser($filter, $id);
     }
 
     public function getExerciseList($request)
@@ -69,19 +84,4 @@ class ExerciseService
         return $this->exerciseRepository->getById($id);
     }
 
-    public function updateExercise($data, $id)
-    {
-        $validator = Validator::make($data,[
-            'subject' => 'required',
-            'name' => 'required',
-            'task' => 'required',
-            'answer' => 'required',
-        ]);
-
-        if($validator->fails()) {
-            throw new InvalidArgumentException($validator->errors()->first());
-        }
-
-        return $this->exerciseRepository->update($data, $id);
-    }
 }

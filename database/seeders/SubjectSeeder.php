@@ -8,11 +8,7 @@ use Illuminate\Support\Facades\Schema;
 
 class SubjectSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
+
 
     const TABLE = 'subjects';
 

@@ -26,12 +26,20 @@
             </div>
             <div class="form-group">
                 <label for="difficulty">Choose difficulty</label>
-                <select class="form-control" name="difficulty">
+                <select class="selectpicker" name="difficulty">
                     <option @if((int)old('difficulty') === 1) selected @endif>1</option>
                     <option @if((int)old('difficulty') === 2) selected @endif>2</option>
                     <option @if((int)old('difficulty') === 3) selected @endif>3</option>
                     <option @if((int)old('difficulty') === 4) selected @endif>4</option>
                     <option @if((int)old('difficulty') === 5) selected @endif>5</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="tags">Choose some tags</label>
+                <select class="form-control selectpicker" name="tags[]" multiple data-live-search="true">
+                    @foreach($tags as $tag)
+                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="form-group">

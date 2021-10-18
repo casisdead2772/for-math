@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -24,16 +25,29 @@ class UserSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         DB::table(self::TABLE)->truncate();
 
-        DB::table(self::TABLE)->insertOrIgnore([
-            'name' => 'Admin',
-            'email' => 'admin@admin.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('admin@admin.com'), // password
-            'remember_token' => Str::random(10),
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
+        $admin_role = Role::where('name','admin')->first();
+        $user_role = Role::where('name','user')->first();
+
+        $admin = new User();
+        $admin->name = 'Test_Admin';
+        $admin->email = 'admin@admin.com';
+        $admin->password = Hash::make('admin@admin.com');
+        $admin->email_verified_at = now();
+        $admin->remember_token = Str::random(10);
+        $admin->save();
+        $admin->roles()->attach($admin_role);
+
+        $user = new User();
+        $user->name = 'Test_user';
+        $user->email = 'user@user.com';
+        $user->password = Hash::make('user@user.com');
+        $user->email_verified_at = now();
+        $user->remember_token = Str::random(10);
+        $user->save();
+        $user->roles()->attach($user_role);
+
         User::factory(5)->create();
         //
     }
+
 }

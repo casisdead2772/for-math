@@ -33,6 +33,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.4",
+        "bootstrap-select": "^1.13.18",
         "dropzone": "^5.9.3",
         "jquery-ui": "^1.13.0",
         "vue-star-rating": "^1.7.0"

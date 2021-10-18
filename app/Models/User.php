@@ -50,7 +50,16 @@ class User extends Authenticatable
 
     public function files(): HasMany
     {
-        return $this->hasMany(Result::class);
+        return $this->hasMany(File::class);
     }
 
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_user')->withTimestamps();
+    }
+
+    public function exercises()
+    {
+        return $this->hasMany(Exercise::class);
+    }
 }

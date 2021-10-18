@@ -21,8 +21,9 @@ class CreateExercisesTable extends Migration
             $table->string('name');
             $table->text('task');
             $table->integer('difficulty');
-            $table->integer('created_at');
-            $table->integer('updated_at');
+            $table->integer('average')->default(0);
+            $table->timestamps();
+            $table->integer('created_timestamp');
         });
     }
 

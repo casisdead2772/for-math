@@ -1,7 +1,12 @@
 <template>
     <div class="container">
-        <star-rating :round-start-rating="false" v-model:rating="ratingLocal" :star-size="30"></star-rating>
-        {{ ratingLocal }}
+        <star-rating
+            :round-start-rating="false"
+            @rating-selected="setRating"
+            v-model:rating="data.rating"
+            :read-only="readonly"
+            :star-size="30">
+        </star-rating>
     </div>
 </template>
 
@@ -9,34 +14,50 @@
     import StarRating from 'vue-star-rating'
     export default {
         props: {
-            rating: Number,
-            id: Number
+            id: Number,
+            readonly: { type: Boolean, default: false }
         },
         components:{
             'star-rating': StarRating
         },
         data() {
             return {
-                selectedRating: null,
-                ratingLocal: this.rating
+                averageRating: null,
+                data: {
+                    rating: 0,
+                    exercise_id: this.id,
+                },
+                resp: ''
             }
         },
-        mounted() {
+        created() {
             this.getRating();
         },
         methods: {
             async getRating () {
-                this.isLoading = true
                 try {
-                    const { data } = await axios.get('http://formath.local/rating/' + this.id)
-                    console.log(data)
-                    this.selectedRating = data.data
+                    await axios.get('http://formath.local/rating/' + this.id)
+                        .then(response => (this.resp = response.data))
+                    if(this.resp !== null){
+                        this.data.rating = Number.parseFloat(this.resp)
+                    }
                 } catch (e) {
-
+                    console.log(e)
                 }
             },
             async setRating () {
-
+                try {
+                    await axios.post('http://formath.local/rating', this.data)
+                        .then((response) => {
+                            console.log(response.data);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                    await this.getRating();
+                } catch (err){
+                    console.log(err)
+                }
             }
         }
     }

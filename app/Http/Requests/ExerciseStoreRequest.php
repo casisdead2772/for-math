@@ -30,7 +30,8 @@ class ExerciseStoreRequest extends FormRequest
             'subject' => ['required', 'integer',Rule::exists(Subject::class, 'id')],
             'name' => 'required|string|min:1|max:100',
             'task' => 'required',
-            'answers' => 'required|array|min:1|max:3'
+            'answers' => 'required|array|min:1|max:3',
+            'answers.*' =>'required|string|distinct'
         ];
     }
 }

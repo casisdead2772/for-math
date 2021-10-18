@@ -6,9 +6,8 @@
         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/my-exercises">My exercises</a>
         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/exercises/create">Create exercise</a>
         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">My achievements</a>
-        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
-        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
+        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/user">Profile</a>
     </div>
 </div>
 @endauth
-<!-- Bootstrap core JS-->
+

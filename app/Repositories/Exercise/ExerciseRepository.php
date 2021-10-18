@@ -4,6 +4,7 @@
 namespace App\Repositories\Exercise;
 
 use App\Models\Exercise;
+use DateTime;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -29,37 +30,51 @@ class ExerciseRepository
      */
     public function save($request)
     {
+        $tags = $request->get('tags');
         $exercise = new $this->exercise;
         $exercise->user_id = Auth::id();
         $exercise->subject_id = $request->get('subject');
         $exercise->name = $request->get('name');
         $exercise->task = $request->get('task');
         $exercise->difficulty = $request->get('difficulty');
+        $exercise->created_timestamp = (new DateTime)->getTimestamp();
         $exercise->save();
+
+        foreach($tags as $tag){
+            $exercise->tags()->attach($tag);
+        }
+
         return $exercise;
     }
 
-    public function update($data, $id)
+    public function update($request, $id)
     {
         $exercise = Exercise::findOrFail($id);
-        $exercise->subject_id = $data['subject'];
-        $exercise->name = $data['name'];
-        $exercise->task = $data['task'];
-        $exercise->answer = $data['answer'];
+        $exercise->subject_id = $request->get('subject0');
+        $exercise->name = $request->get('name');
+        $exercise->task = $request->get('task');
 
         return $exercise->fresh();
-
     }
 
     /**
      * @param $id
      * @return mixed
      */
-    public function getByUser($id)
+    public function getByUser(ExerciseFilter $exerciseFilter, $id)
     {
-        return $this->exercise
-            ->where('user_id', $id)
-            ->get();
+        $query =  $this->exercise->where('user_id', $id);
+        if($exerciseFilter->getSubjectId()){
+            $query->where('subject_id', $exerciseFilter->getSubjectId());
+        }
+
+        if($exerciseFilter->getSort()){
+            $query->orderBy($exerciseFilter->getSort(), 'desc');
+        }
+
+        $query->get();
+
+        return $query->paginate($exerciseFilter->getLimit());
     }
 
     /**
@@ -91,4 +106,5 @@ class ExerciseRepository
     {
         return Exercise::findOrFail($id);
     }
+
 }

@@ -16,6 +16,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="dist/css/bs-dropzone.min.css" />
 </head>
 <body>
     <div id="app">
@@ -38,23 +39,29 @@
             @endif
         @endforeach
         </div>
-        <div class="d-flex" id="wrapper">
+        <div class="d-flex bg-white" id="wrapper">
             @include('layouts.sidebar')
         <div class="container">
             <div class="container p-2">
-            @include('layouts.search')
+                @include('layouts.search')
             </div>
                 @yield('content')
                 @yield('exercise')
                 @yield('my-exercises')
                 @yield('edit-exercise')
-                @yield('my-exercises')
                 @yield('404')
                 @yield('solve-exercise')
+                @yield('admin')
                 </div>
             </div>
 {{--            @include('layouts.footer')--}}
             </main>
+
+    </div>
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+        <div id="caption"></div>
     </div>
     <script src="{{ mix('js/app.js') }}"></script>
     <script src="{{ asset('js/sidebar.js') }}" rel="stylesheet"></script>

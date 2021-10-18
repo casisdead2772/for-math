@@ -29,6 +29,8 @@ class CreateResultsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('results');
+        Schema::enableForeignKeyConstraints();
     }
 }

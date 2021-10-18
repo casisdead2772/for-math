@@ -20,12 +20,12 @@ class RatingController extends Controller
     {
         try {
             $this->ratingService->createRating($request);
-            $request->session()->flash('alert-success', 'Exercise was successful added!');
+            $response = 'success';
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->back()->withErrors($e->getMessage());
+            return $response = $e->getMessage();
         }
-        return 'success';
+        return response()->json($response);
     }
 
     public function index(int $id)
@@ -36,7 +36,7 @@ class RatingController extends Controller
             Log::error($e->getMessage());
             return $e->getMessage();
         }
-        return $rating;
+        return json_encode($rating, JSON_THROW_ON_ERROR);
     }
 
 }

@@ -11,5 +11,4 @@ class SubjectRepository
     {
         return Subject::all();
     }
-
 }
